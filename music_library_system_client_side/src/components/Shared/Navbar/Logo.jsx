@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
-import logoImg from '../../../assets/images/logo.png'
+import logoImg from '../../../assets/images/loogavif.avif'
 
 const Logo = () => {
   return (
-    <Link to='/'>
       <img
         className='hidden md:block'
         src={logoImg}
@@ -11,7 +10,6 @@ const Logo = () => {
         width='100'
         height='100'
       />
-    </Link>
   )
 }
 

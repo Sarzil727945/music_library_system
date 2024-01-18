@@ -1,37 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
 import './Dashboard.css'
+import React, { useRef } from 'react';
 import { BarChart, Bar, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { BsFingerprint } from 'react-icons/bs';
 import { GrUpdate } from "react-icons/gr";
 import { MdHomeWork, MdOutlineManageHistory } from 'react-icons/md';
-import { AuthContext } from '../../../providers/AuthProvider';
-import { getAllRooms } from '../../../api/rooms';
-import { getBookings, getHostBookings } from '../../../api/bookings';
 import { BiCloudDownload } from 'react-icons/bi';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 const Dashboard = () => {
-     const { user } = useContext(AuthContext)
-     const [postRooms, setPostRooms] = useState([])
-     const [userBookings, setUserBookings] = useState([])
-     const [myBookings, setMyBookings] = useState([])
-
-     useEffect(() => {
-          getAllRooms().then(data => {
-               const room = data?.filter(d => d?.host?.email === user?.email)
-               setPostRooms(room);
-          })
-
-          getHostBookings(user?.email).then(data => {
-               setUserBookings(data)
-          })
-
-          getBookings(user?.email).then(data => {
-               setMyBookings(data)
-          })
-     }, []);
-
      // pdf part start 
      const dashboardRef = useRef();
      const dashboardToPDF = () => {
@@ -122,8 +99,8 @@ const Dashboard = () => {
                                              </h5>
                                         </div>
                                         <div>
-                                             <h2 className="card-title text-white  justify-end font-bold text-3xl">{postRooms?.length}</h2>
-                                             <h6 className="card-title text-white">Total My Posts</h6>
+                                             <h2 className="card-title text-white  justify-end font-bold text-3xl">5</h2>
+                                             <h6 className="card-title text-white">My Post Albums</h6>
                                         </div>
                                    </div>
                               </div>
@@ -136,8 +113,8 @@ const Dashboard = () => {
                                              </h5>
                                         </div>
                                         <div>
-                                             <h2 className="card-title text-white  justify-end font-bold text-3xl">{userBookings?.length}</h2>
-                                             <h6 className="card-title text-white justify-end">Total User Bookings</h6>
+                                             <h2 className="card-title text-white  justify-end font-bold text-3xl">5</h2>
+                                             <h6 className="card-title text-white justify-end">My Post Songs</h6>
                                         </div>
                                    </div>
                               </div>
@@ -151,8 +128,8 @@ const Dashboard = () => {
                                              </h5>
                                         </div>
                                         <div>
-                                             <h2 className="card-title text-white  justify-end font-bold text-3xl">{myBookings?.length}</h2>
-                                             <h6 className="card-title text-white">Total My Bookings</h6>
+                                             <h2 className="card-title text-white  justify-end font-bold text-3xl">5</h2>
+                                             <h6 className="card-title text-white">Update Now Albums</h6>
                                         </div>
                                    </div>
                               </div>
@@ -166,7 +143,7 @@ const Dashboard = () => {
                                         </div>
                                         <div>
                                              <h2 className="card-title text-white  justify-end font-bold text-3xl">2</h2>
-                                             <h6 className="card-title text-white">Update Now</h6>
+                                             <h6 className="card-title text-white">Update Now Songs</h6>
                                         </div>
                                    </div>
                               </div>

@@ -1,8 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/Dashboard/Sidebar'
 import { AuthContext } from '../providers/AuthProvider'
-import { useContext, useEffect, useState } from 'react'
-import { getHostBookings } from '../api/bookings'
+import { useContext,  useState } from 'react'
 import { CiDark } from "react-icons/ci";
 import Logo from '../components/Shared/Navbar/Logo'
 import { MdOutlineLightMode } from 'react-icons/md';
@@ -14,11 +13,6 @@ const DashboardLayout = () => {
      const [userBookings, setUserBookings] = useState([])
      const [darkLight, setDarkLight] = useState(false)
 
-     useEffect(() => {
-          getHostBookings(user?.email).then(data => {
-               setUserBookings(data)
-          })
-     }, []);
 
      const bgDarkLight = () => {
           if (darkLight) {

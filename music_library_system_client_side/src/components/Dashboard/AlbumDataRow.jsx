@@ -1,11 +1,10 @@
-import { format } from 'date-fns'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import DeleteModal from '../Modal/DeleteModal'
-import { deleteChoiceRooms } from '../../api/addChoice'
-import { Link } from 'react-router-dom'
+import { deleteAlbums } from '../../api/albums'
+import UpdateAlbumModal from '../Modal/UpdateAlbumModal'
 
-const ChoiceRoomDataRow = ({ room, refetch }) => {
+const AlbumDataRow = ({ album, fetchSpecificAlbums }) => {
   let [isOpen, setIsOpen] = useState(false)
   let [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
@@ -16,11 +15,9 @@ const ChoiceRoomDataRow = ({ room, refetch }) => {
     setIsOpen(false)
   }
   const modalHandler = id => {
-    console.log(id)
-    deleteChoiceRooms(id)
+    deleteAlbums(id)
       .then(data => {
-        console.log(data)
-        refetch()
+        fetchSpecificAlbums()
         toast.success('Room deleted')
       })
       .catch(err => console.log(err))
@@ -32,33 +29,19 @@ const ChoiceRoomDataRow = ({ room, refetch }) => {
         <div className='flex items-center'>
           <div className='flex-shrink-0'>
             <div className='block relative'>
-              <img
-                alt='profile'
-                src={room?.image}
-                className='mx-auto object-cover rounded h-10 w-15 '
-              />
+              <p className='text-gray-900 whitespace-no-wrap'>{album?.title}</p>
             </div>
-          </div>
-          <div className='ml-3'>
-            <p className='text-gray-900 whitespace-no-wrap'>{room?.title}</p>
           </div>
         </div>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>{room?.location}</p>
+        <p className='text-gray-900 whitespace-no-wrap'>{album?.release_year}</p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>${room?.price}</p>
+        <p className='text-gray-900 whitespace-no-wrap'>{album?.genre}</p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>
-          {format(new Date(room?.from), 'P')}
-        </p>
-      </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>
-          {format(new Date(room?.to), 'P')}
-        </p>
+      <p className='text-gray-900 whitespace-no-wrap'>{album?.artists}</p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
         <span
@@ -75,25 +58,31 @@ const ChoiceRoomDataRow = ({ room, refetch }) => {
           isOpen={isOpen}
           closeModal={closeModal}
           modalHandler={modalHandler}
-          id={room._id}
+          id={album.id}
         />
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <Link to={`/room/${room._id}`}>
+        <span
+          onClick={() => setIsEditModalOpen(true)}
+          className='relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight'
+        >
           <span
-            onClick={() => setIsEditModalOpen(true)}
-            className='relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight'
-          >
-            <span
-              aria-hidden='true'
-              className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
-            ></span>
-            <span className='relative'>Order Now</span>
-          </span>
-        </Link>
+            aria-hidden='true'
+            className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
+          ></span>
+          <span className='relative'>Update</span>
+        </span>
+        <UpdateAlbumModal
+          isOpen={isEditModalOpen}
+          closeModal={() => setIsEditModalOpen(false)}
+          album={album}
+          id={album.id}
+          fetchSpecificAlbums={fetchSpecificAlbums}
+          setIsEditModalOpen={setIsEditModalOpen}
+        />
       </td>
     </tr>
   )
 }
 
-export default ChoiceRoomDataRow
+export default AlbumDataRow

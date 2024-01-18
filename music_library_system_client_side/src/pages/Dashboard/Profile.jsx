@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../../providers/AuthProvider';
-import { imageUpload } from '../../api/utils';
-import { getUsers, upDataUser } from '../../api/users';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import bgImg from '../../../public/cover.jpg';
 import toast from 'react-hot-toast';

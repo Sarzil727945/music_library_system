@@ -5,8 +5,8 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { AuthContext } from '../../providers/AuthProvider'
 import { TbFidgetSpinner } from 'react-icons/tb'
-import { saveUser } from '../../api/auth'
 import Stats from 'stats.js';
+import { saveUser } from '../../api/users';
 
 
 const generateRandomColor = () => Math.floor(Math.random() * 16777215).toString(16);
@@ -22,7 +22,7 @@ const SignUp = () => {
   } = useContext(AuthContext)
   const navigate = useNavigate()
   const location = useLocation()
-  const from = location.state?.from?.pathname || '/'
+  const from = location.state?.from?.pathname || '/dashboard/my-dashboard'
 
   const [passwordShown, setPasswordShown] = useState(false);
   const [passwordIcon, setPasswordIcon] = useState(false);
@@ -61,8 +61,7 @@ const SignUp = () => {
     formData.append('image', image)
 
     if (name && email && password && image) {
-      const url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY
-        }`
+      const url = `https://api.imgbb.com/1/upload?key=a77b79ed81286cc292ba0f61f05cd70f`
       fetch(url, {
         method: 'POST',
         body: formData,

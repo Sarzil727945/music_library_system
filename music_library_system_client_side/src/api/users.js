@@ -1,20 +1,33 @@
+// save a user to database
+export const saveUser = (user, password) => {
+  const currentUsers = {
+    name: user.displayName,
+    email: user.email,
+    pic: user.photoURL,
+    password: (password || 'googlePassword'),
+  }
 
-// Get role
-export const getUsers = async email => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${email}`)
+  fetch(`http://localhost:5005/createUsers`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(currentUsers),
+  })
+    .then(res => res.json())
+    .then(data => console.log(data))
+}
+
+// getAll user 
+export const getUsers = async () => {
+  const response = await fetch(`http://localhost:5005/getUsers`)
   const user = await response.json()
   return user
 }
 
-// update a user
-export const upDataUser = (user, upDataUserInfo) => {
-  fetch(`${import.meta.env.VITE_API_URL}/users/${user?.email}`, {
-    method: 'PUT',
-    headers: {
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify(upDataUserInfo),
-  })
-    .then(res => res.json())
-    .then(data => console.log(data))
+// getSpecific a user
+export const getSpecificUser = async (email) => {
+  const response = await fetch(`http://localhost:5005/getSpecificUser/${email}`)
+  const SpecificUser = await response.json()
+  return SpecificUser
 }

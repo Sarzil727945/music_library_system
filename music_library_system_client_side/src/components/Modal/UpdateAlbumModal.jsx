@@ -1,64 +1,37 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { imageUpload } from '../../api/utils'
-import UpdateRoomForm from '../Forms/UpdateRoomForm'
+import UpdateRoomForm from '../Forms/UpdateAlbumForm'
 import { toast } from 'react-hot-toast'
-import { updateRoom } from '../../api/rooms'
+import { updateAlbums } from '../../api/albums'
 
-const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
+const UpdateAlbumModal = ({ setIsEditModalOpen, isOpen, fetchSpecificAlbums, album, id }) => {
   const [loading, setLoading] = useState(false)
-  const [uploadButtonText, setUploadButtonText] = useState('Upload Image')
-  const [dates, setDates] = useState({
-    startDate: new Date(room.from),
-    endDate: new Date(room.to),
-    key: 'selection',
-  })
-  const [roomData, setRoomData] = useState(room)
+  const [Albums, setAlbums] = useState(album)
+  const [selectedArtists, setSelectedArtists] = useState([]);
 
-  const handleImageUpdate = image => {
-    setLoading(true)
-    setUploadButtonText(image.name)
-    // setUploadButtonText('Uploading...')
-    imageUpload(image)
-      .then(res => {
-        setRoomData({ ...roomData, image: res.data.display_url })
-        setLoading(false)
-      })
-      .catch(err => {
-        console.log(err)
-        setLoading(false)
-      })
-  }
 
   const handleSubmit = event => {
     event.preventDefault()
-    console.log(roomData)
-    const updatedData = Object.assign({}, { ...roomData })
-    delete updatedData._id
-    setLoading(true)
-    updateRoom(updatedData, id)
-      .then(data => {
-        console.log(data)
-        toast.success('Home info updated')
-        setLoading(false)
-        refetch()
-        setIsEditModalOpen(false)
-      })
-      .catch(err => {
-        console.log(err)
-        setLoading(false)
-      })
-  }
 
-  const handleDates = ranges => {
-    setDates(ranges.selection)
-    setRoomData({
-      ...roomData,
-      to: ranges.selection.endDate,
-      from: ranges.selection.startDate,
+    const id = Albums?.id
+    const title = Albums?.title;
+    const genre = Albums?.genre;
+    const year = Albums?.release_year
+    const artistID = selectedArtists + ''
+    const hostEmail = Albums?.host_email
+
+    const albumsUpdateData = { id, title, genre, year, artistID, hostEmail }
+    setLoading(true)
+
+    updateAlbums(id, albumsUpdateData).then(data => {
+      toast.success('Albums info updated')
+      setLoading(false)
+      fetchSpecificAlbums()
+      setIsEditModalOpen(false)
     })
   }
-  
+
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
@@ -94,18 +67,16 @@ const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
                   as='h3'
                   className='text-lg font-medium text-center leading-6 text-gray-900'
                 >
-                  Update Room Info
+                  Update Album Info
                 </Dialog.Title>
                 <div className='mt-2 w-full'>
                   <UpdateRoomForm
                     handleSubmit={handleSubmit}
-                    roomData={roomData}
-                    setRoomData={setRoomData}
-                    uploadButtonText={uploadButtonText}
-                    handleImageUpdate={handleImageUpdate}
+                    Albums={Albums}
+                    setAlbums={setAlbums}
                     loading={loading}
-                    dates={dates}
-                    handleDates={handleDates}
+                    selectedArtists={selectedArtists}
+                    setSelectedArtists={setSelectedArtists}
                   />
                 </div>
                 <hr className='mt-8 ' />
@@ -127,4 +98,4 @@ const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
   )
 }
 
-export default UpdateRoomModal
+export default UpdateAlbumModal

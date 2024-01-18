@@ -11,7 +11,7 @@ import {
   updateProfile,
 } from 'firebase/auth'
 import { app } from '../firebase/firebase.config'
-import { getRole } from '../api/auth'
+import { getRole } from '../api/albums'
 import axios from 'axios'
 
 export const AuthContext = createContext(null)
@@ -69,7 +69,7 @@ const AuthProvider = ({ children }) => {
       // get and set token
       if (currentUser) {
         axios
-          .post(`${import.meta.env.VITE_API_URL}/jwt`, {
+          .post(`http://localhost:5005/jwt`, {
             email: currentUser.email,
           })
           .then(data => {

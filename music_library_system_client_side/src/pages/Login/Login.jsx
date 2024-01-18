@@ -5,16 +5,15 @@ import { useContext, useEffect, useRef } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { AuthContext } from '../../providers/AuthProvider';
 import { TbFidgetSpinner } from 'react-icons/tb';
-import { saveUser } from '../../api/auth';
 import { useState } from 'react';
-import anime from 'animejs';
+import { saveUser } from '../../api/users';
 
 const Login = () => {
   const { loading, setLoading, signIn, signInWithGoogle, resetPassword } =
     useContext(AuthContext)
   const navigate = useNavigate()
   const location = useLocation()
-  const from = location.state?.from?.pathname || '/'
+  const from = location.state?.from?.pathname || '/dashboard/my-dashboard'
   const emailRef = useRef()
   const [passwordShown, setPasswordShown] = useState(false);
   const [passwordIcon, setPasswordIcon] = useState(false);
@@ -316,7 +315,7 @@ const Login = () => {
             <p className='px-6 text-sm text-center text-gray-400'>
               Don't have an account yet?{' '}
               <Link
-                to='/signup'
+                to='/'
                 className='hover:underline hover:text-rose-500 text-gray-600'
               >
                 Sign up
